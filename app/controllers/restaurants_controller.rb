@@ -2,12 +2,7 @@ class RestaurantsController < ApplicationController
   before_action :set_restaurant, only: [ :show, :edit, :update, :destroy ]
 
   def index
-    @restaurants =  Restaurant.all
-  end
-
-  def top
-    @restaurants = Restaurant.where(stars: 5)
-    render :index
+    @restaurants = Restaurant.all
   end
 
   def show
@@ -19,28 +14,13 @@ class RestaurantsController < ApplicationController
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
-
-    if @restaurant.save
+    p params
+    p @restaurant                                        #stops the execution, allows you to put commands see parameters
+    if @restaurant.save!
       redirect_to restaurants_path
     else
-      render :new
+      render :new                                      # renders new view
     end
-  end
-
-  def edit
-  end
-
-  def update
-    if @restaurant.update(restaurant_params)
-      redirect_to restaurant_path(@restaurant)
-    else
-      render :edit
-    end
-  end
-
-  def destroy
-    @restaurant.destroy
-    redirect_to restaurants_path
   end
 
   private
@@ -50,6 +30,6 @@ class RestaurantsController < ApplicationController
   end
 
   def restaurant_params
-    params.require(:restaurant).permit(:name, :address, :description, :stars)
+    params.require(:restaurant).permit(:name, :address, :category)
   end
 end
